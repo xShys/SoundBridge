@@ -1,6 +1,6 @@
-## SoundBridge
+# SoundBridge
 
-# Browser Extension (Chrome/Firefox) + Backend API (Node.js) + yt-dlp (Docker)
+## Browser Extension (Chrome/Firefox) + Backend API (Node.js) + yt-dlp (Docker)
 
 - ✅ Download YouTube video audio on-demand directly into your private media library (Jellyfin, Navidrome ecc...)
 - ✅ No Web UI: everything is controlled from the browser extension
@@ -25,13 +25,13 @@ Jellyfin/Navidrome → Music Client iOS, Android or Desktop/Browser
 ```
 I personally use Finamp(iOS) for listen my Jellyfin music library
 
-# Requirements:
+## Requirements:
 
 - Docker + Docker Compose
 - A server running media server with a music library pointed to /mylibrary/media/music (or of cource your path, set also to .env)
 - This project (API + yt-dlp) and browser extention
 
-# Open Source Media Server Examples
+## Open Source Media Server Examples
 - Jellyfin (https://github.com/jellyfin/jellyfin)
 - Navidrome (https://github.com/navidrome/navidrome/)
 - Gonic (https://github.com/sentriz/gonic)
@@ -94,7 +94,7 @@ Test the folders endpoint:
 curl -s -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" http://<LAN_SERVER_IP>:8787/api/music/folders
 ```
 
-# Browser Extension Installation (cooming soon official extension on Chrome Store)
+## Browser Extension Installation (cooming soon official extension on Chrome Store)
 Chrome / Edge:
 
 - Go to chrome://extensions
@@ -118,7 +118,7 @@ Open the extension options and set:
 - Press Test Connection → it should display Connection OK ✅
 
 ---
-## Disclaimer
+# Disclaimer
 
 This project is intended for **personal and educational use only**.
 
@@ -173,7 +173,7 @@ On “guest” or segmented networks, ensure the user's PC can reach the server.
 
 ## ⚠️ Optional: Exposing the API (ADVANCED USERS ONLY)
 
-# Disclaimer – Security Warning
+## Disclaimer – Security Warning
 This project is designed to work LAN/VPN-only by default.
 Exposing the API to the public internet is NOT recommended unless you fully understand the security implications.
 
