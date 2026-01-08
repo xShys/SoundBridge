@@ -29,7 +29,7 @@ I personally use Finamp(iOS) for listen my Jellyfin music library
 
 - Docker + Docker Compose
 - A server running media server with a music library pointed to /mylibrary/media/music (or of cource your path, set also to .env)
-- This project (API + yt-dlp) and browser extention
+- This project (API + yt-dlp) and browser extension
 
 ## Open Source Media Server Examples
 - Jellyfin (https://github.com/jellyfin/jellyfin)
