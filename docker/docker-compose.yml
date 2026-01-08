@@ -1,0 +1,25 @@
+services:
+  yt-dlp:
+    image: jauderho/yt-dlp:latest
+    container_name: yt-dlp-music
+    volumes:
+      - /mnt/media/music:/music
+    entrypoint: sleep infinity
+    restart: unless-stopped
+
+  api:
+    image: node:20-alpine
+    container_name: jellyfin-yt-api
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - /mnt/media/music:/mnt/media/music
+      - /var/run/docker.sock:/var/run/docker.sock
+    env_file:
+      - ./backend/.env
+    command: sh -lc "npm i && npm run start"
+    ports:
+      - "8787:8787"
+    depends_on:
+      - yt-dlp
+    restart: unless-stopped
