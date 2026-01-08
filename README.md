@@ -2,10 +2,10 @@
 
 # Browser Extension (Chrome/Firefox) + Backend API (Node.js) + yt-dlp (Docker)
 
-✅ Download YouTube video audio on-demand directly into your private media library (Jellyfin, Navidrome ecc...)
-✅ No Web UI: everything is controlled from the browser extension
-✅ No database: the filesystem is the single source of truth
-✅ Security: API Key + LAN/VPN-only access (optional, exposed)
+- ✅ Download YouTube video audio on-demand directly into your private media library (Jellyfin, Navidrome ecc...)
+- ✅ No Web UI: everything is controlled from the browser extension
+- ✅ No database: the filesystem is the single source of truth
+- ✅ Security: API Key + LAN/VPN-only access (optional, exposed)
 
 ## Architecture
 
