@@ -293,18 +293,18 @@ API Base URL (Extension)
 https://yt-api.example.com
 
 Strongly Recommended Hardening (If Exposed)
+
 1️⃣ Use VPN-only Access
 
-# Best practice:
-
+Best practice:
 - Expose API only inside WireGuard / OpenVPN
 - Do not allow public IPs
 
 2️⃣ Firewall (UFW example)
-# Allow VPN
+## Allow VPN
 sudo ufw allow from 10.8.0.0/24 to any port 443 proto tcp
 
-# Block everything else
+## Block everything else
 sudo ufw deny 443/tcp
 sudo ufw status verbose
 
