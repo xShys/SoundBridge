@@ -191,3 +191,8 @@ qs("toggleApiKey").addEventListener("click", toggleApiKeyVisibility);
 
 load().catch(() => {});
 setEyeIcon(true);
+
+/*
+ * MIT License
+ * Copyright (c) 2026 Antonio Viola
+ */

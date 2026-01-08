@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Jellyfin YT Audio Downloader",
-  "version": "1.0.0",
-  "description": "Download audio from YouTube to Jellyfin media library.",
+  "name": "SoundBridge",
+  "version": "1.0.2",
+  "description": "Send audio from supported videos directly to your personal server music library.",
   "permissions": ["storage", "activeTab", "tabs"],
   "host_permissions": ["https://*/", "http://*/"],
   "action": {
-    "default_title": "Download to Jellyfin",
+    "default_title": "Download to personal library",
     "default_popup": "popup.html"
   },
   "options_page": "options.html"

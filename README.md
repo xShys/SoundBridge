@@ -1,14 +1,15 @@
-Jellyfin YouTube Audio Downloader
+## SoundBridge
 
-Browser Extension (Chrome/Firefox) + Backend API (Node.js) + yt-dlp (Docker)
+# Browser Extension (Chrome/Firefox) + Backend API (Node.js) + yt-dlp (Docker)
 
-✅ Download YouTube video audio on-demand directly into your Jellyfin library
+✅ Download YouTube video audio on-demand directly into your private media library (Jellyfin, Navidrome ecc...)
 ✅ No Web UI: everything is controlled from the browser extension
 ✅ No database: the filesystem is the single source of truth
-✅ Security: API Key + LAN/VPN-only access
+✅ Security: API Key + LAN/VPN-only access (optional, exposed)
 
-Architecture
+## Architecture
 
+```
 Browser Extension (MV3)
     │ HTTPS/HTTP REST API (LAN/VPN)
     ▼
@@ -18,27 +19,29 @@ Backend API (Node.js)
 yt-dlp container
     │
     ▼
-/mnt/media/music/<folder>/
+/mylibrary/media/music/<folder>/
     ▼
-Jellyfin → Finamp (i personally use Finamp for listen my Jellyfin music library)
+Jellyfin/Navidrome → Music Client iOS, Android or Desktop/Browser
+```
+I personally use Finamp(iOS) for listen my Jellyfin music library
 
-Requirements
+# Requirements:
 
-Docker + Docker Compose
+- Docker + Docker Compose
+- A server running media server with a music library pointed to /mylibrary/media/music (or of cource your path, set also to .env)
+- This project (API + yt-dlp) and browser extention
 
-Jellyfin with a music library pointed to /mnt/media/music (or of cource your path, set also to .env)
+# Open Source Media Server Examples
+- Jellyfin (https://github.com/jellyfin/jellyfin)
+- Navidrome (https://github.com/navidrome/navidrome/)
+- Gonic (https://github.com/sentriz/gonic)
+...And many mores that you can find in the big open source community, most important requirement is a folder to build your personal library
 
-A LAN server running:
-
-Jellyfin (optional: can be elsewhere, but the folder must be accessible)
-
-This project (API + yt-dlp)
-
-Installation (Server)
+## Installation (Server)
 
 1) Clone the repository
-git clone https://github.com/<YOUR_USER>/<YOUR_REPO>.git
-cd <YOUR_REPO>
+git clone https://github.com/xShys/YT-Audio-Downloader.git
+cd YT-Audio-Downloader
 
 2) Configure environment variables
 Create/modify backend/.env:
@@ -46,12 +49,12 @@ Create/modify backend/.env:
 ```
 PORT=8787
 API_KEY=CHANGE_ME_LONG_RANDOM
-MUSIC_ROOT=/mnt/media/music
+MUSIC_ROOT=/mylibrary/media/music
 YTDLP_CONTAINER=yt-dlp-music
 CORS_ORIGINS=chrome-extension://*,moz-extension://*
 ```
 
-Tip: generate a long random key:
+Tip: generate a long random key for api key:
 
 ```
 openssl rand -hex 32
@@ -61,11 +64,11 @@ openssl rand -hex 32
 Make sure the folder exists and is writable:
 
 ```
-sudo mkdir -p /mnt/media/music
-sudo chown -R $USER:$USER /mnt/media/music
+sudo mkdir -p /mylibrary/media/music
+sudo chown -R $USER:$USER /mylibrary/media/music
 ```
 
-4) Avvia con Docker Compose
+4) Run with Docker Compose
 
 ```
 docker compose up -d
@@ -88,67 +91,70 @@ curl -s http://<LAN_SERVER_IP>:8787/api/health
 Test the folders endpoint:
 
 ```
-curl -s \
-  -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" \
-  http://<LAN_SERVER_IP>:8787/api/music/folders
+curl -s -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" http://<LAN_SERVER_IP>:8787/api/music/folders
 ```
 
-Browser Extension Installation
-Chrome / Edge
+# Browser Extension Installation (cooming soon official extension on Chrome Store)
+Chrome / Edge:
 
-Go to chrome://extensions
+- Go to chrome://extensions
+- Enable Developer mode
+- Click Load unpacked
+- Select the extension/ folder
 
-Enable Developer mode
-
-Click Load unpacked
-
-Select the extension/ folder
-
-Firefox (MV3)
-
+Firefox (MV3):
 Firefox supports MV3 with some differences; for testing:
 
-Go to about:debugging#/runtime/this-firefox
+- Go to about: debugging#/runtime/this-firefox
+- Click Load Temporary Add-on
+- Select extension/manifest.json
 
-Click Load Temporary Add-on
-
-Select extension/manifest.json
-
-Extension Configuration
+Extension Configuration:
 
 Open the extension options and set:
 
-API Base URL: http://<LAN_SERVER_IP>:8787
+- API Base URL: http://<LAN_SERVER_IP>:8787
+- API Key: the one in backend/.env
+- Press Test Connection → it should display Connection OK ✅
 
-API Key: the one in backend/.env
+---
+## Disclaimer
 
-Press Test Connection → it should display Connection OK ✅
+This project is intended for **personal and educational use only**.
 
-Usage
+It is designed to facilitate the management and downloading of audio content from YouTube videos **that are not protected by copyright**, including but not limited to:
+- royalty-free music,
+- content released under Creative Commons or similar licenses,
+- content for which the user owns the rights or has obtained explicit permission from the copyright holder.
 
-Open any YouTube video
+This project **does not encourage, promote, or support** the unauthorized downloading, copying, or redistribution of copyrighted material.
 
-Click the extension icon
+By using this software, you acknowledge that:
+- You are solely responsible for ensuring that your usage complies with applicable copyright laws and YouTube’s Terms of Service.
+- You are responsible for verifying the license and usage rights of any content you download.
+- The author and contributors **shall not be held liable** for any misuse of this software or for any legal consequences resulting from its use.
 
-Select a folder or type a new target folder
+This software is provided **“as is”**, without warranty of any kind, express or implied.
+---
 
-Click Download audio
+## Usage:
 
-After the download completes, Jellyfin will index the new files (according to its scheduled scanning settings).
+- Open any YouTube video
+- Click the extension icon
+- Select a folder or type a new target folder
+- Click "Download Audio"
+
+After the download completes, Your media server (like Jellyfin, Navidrome ecc...) will index the new files (according to its scheduled scanning settings).
 
 Security (LAN/VPN Only)
-Minimum recommendations
 
-Do NOT expose port 8787 to the internet (NO router port forwarding)
-
-Use a strong API Key
-
-Keep rate limiting enabled (already included)
-
-UFW (optional but recommended)
+Minimum recommendations:
+- Do NOT expose port 8787 to the internet (NO router port forwarding)
+- Use a strong API Key
+- Keep rate limiting enabled (already included)
+- UFW (optional but recommended)
 
 Example: allow port 8787 only from LAN 192.168.1.0/24:
-
 ```
 sudo ufw allow from 192.168.1.0/24 to any port 8787 proto tcp
 sudo ufw deny 8787/tcp
@@ -156,7 +162,6 @@ sudo ufw status verbose
 ```
 
 If using WireGuard, allow only the VPN subnet (e.g., 10.8.0.0/24):
-
 ```
 sudo ufw allow from 10.8.0.0/24 to any port 8787 proto tcp
 sudo ufw deny 8787/tcp
@@ -166,13 +171,13 @@ Note:
 The browser extension makes HTTP requests to the LAN server.
 On “guest” or segmented networks, ensure the user's PC can reach the server.
 
-⚠️ Optional: Exposing the API (ADVANCED USERS ONLY)
+## ⚠️ Optional: Exposing the API (ADVANCED USERS ONLY)
 
-Disclaimer – Security Warning
+# Disclaimer – Security Warning
 This project is designed to work LAN/VPN-only by default.
 Exposing the API to the public internet is NOT recommended unless you fully understand the security implications.
-If you expose this API:
 
+If you expose this API:
 - Use HTTPS only
 - Protect it with strong API keys
 - Restrict access with IP allowlists, VPN, or authentication middleware
@@ -184,7 +189,6 @@ Option 1 — Exposing the API with Traefik (Recommended)
 This option is suitable if you already run Traefik as a reverse proxy for Jellyfin or other services.
 
 Requirements:
-
 - Traefik v2+
 - HTTPS enabled (Let’s Encrypt or internal CA)
 
@@ -196,15 +200,15 @@ Remove the ports: section from the API container and add Traefik labels:
 services:
   api:
     image: node:20-alpine
-    container_name: jellyfin-yt-api
+    container_name: yt-audio-api
     working_dir: /app
     volumes:
       - ./backend:/app
-      - /mnt/media/music:/mnt/media/music
+      - /mylibrary/media/music:/music
       - /var/run/docker.sock:/var/run/docker.sock
     env_file:
       - ./backend/.env
-    command: sh -lc "npm ci || npm i && npm run start"
+    command: sh -lc "apk add --no-cache docker-cli && npm i && npm run start"
     networks:
       - traefik
     labels:
@@ -232,7 +236,6 @@ services:
       - "traefik.http.middlewares.ytapi-headers.headers.browserxssfilter=true"
 
     restart: unless-stopped
-
 networks:
   traefik:
     external: true
@@ -245,7 +248,6 @@ Traefik Security Notes:
 - Do NOT expose without ipallowlist
 - Prefer VPN-only access
 - Do not rely on API Key alone if exposed publicly
-
 
 Option 2 — Exposing the API with NGINX
 Use this if you don’t run Traefik and prefer a traditional reverse proxy.
@@ -293,11 +295,10 @@ https://yt-api.example.com
 Strongly Recommended Hardening (If Exposed)
 1️⃣ Use VPN-only Access
 
-Best practice:
+# Best practice:
 
 - Expose API only inside WireGuard / OpenVPN
 - Do not allow public IPs
-
 
 2️⃣ Firewall (UFW example)
 # Allow VPN
@@ -307,23 +308,21 @@ sudo ufw allow from 10.8.0.0/24 to any port 443 proto tcp
 sudo ufw deny 443/tcp
 sudo ufw status verbose
 
-
 3️⃣ Rotate API Keys
 - Treat API keys like passwords
 - Change immediately if leaked
-- Never commit .env to GitHub
 
 Final Recommendation
 Default mode (LAN-only, no reverse proxy) is the safest and recommended setup.
 
 Expose the API only if:
 
-- You already expose Jellyfin
+- You already expose Jellyfin or other services
 - You understand reverse proxies
 - You restrict access via VPN or IP allowlists
 - You accept the security responsibility
 
-Troubleshooting
+## Troubleshooting:
 
 1) docker exec does not work
 
@@ -342,28 +341,27 @@ Try a different URL and avoid playlists (--no-playlist is already enabled).
 Check logs:
 
 ```
-docker compose logs -f api
+docker compose logs -f yt-audio-api
 ```
 
 3) Files end up with strange names
 
 --restrict-filenames is enabled for safety and compatibility.
 
-4) Jellyfin does not detect new files
+4) Media server (Jellyfin, Navidrome ecc...) does not detect new files
 
-Make sure Jellyfin points to the same directory
+- Make sure the media server points to the same directory
+-Trigger Scan Library or enable automatic scanning
 
-Trigger Scan Library or enable automatic scanning
 
+## Roadmap:
 
-Roadmap
-
-- Async jobs + jobId + polling
 - Playlist download
 - Preset folders
 - Audio tagging / ID3 + normalization
 - Browser notifications
 
-License
+## License
 
-MIT
+This project is licensed under the **MIT License**.
+You are free to use, modify, and distribute this software in accordance with the terms of the MIT License.

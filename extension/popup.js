@@ -63,7 +63,69 @@ async function toggleTheme() {
   toast(`Theme: ${next}`, "info");
 }
 
-/* ---------- Status + Log ---------- */
+/* ---------- Status + Log + Polling ---------- */
+let activePoll = null;
+
+function appendLogsToTextarea(lines) {
+  if (!lines || lines.length === 0) return;
+  const logEl = qs("log");
+  const prev = logEl.value || "";
+  const add = lines.join("\n") + "\n";
+
+  logEl.value = prev + add;
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+async function pollJobUntilDone(jobId, { onProgress } = {}) {
+  let since = 0;
+
+  return new Promise((resolve, reject) => {
+    const tick = async () => {
+      try {
+        const data = await apiFetch(`/api/downloads/${jobId}?since=${since}`, { method: "GET" });
+
+        if (data?.logs?.length) {
+          appendLogsToTextarea(data.logs);
+          since = data.nextSince ?? (since + data.logs.length);
+        }
+
+        const job = data?.job;
+        if (onProgress) onProgress(job);
+
+        if (!job) throw new Error("Invalid job response");
+
+        if (job.status === "done") return finish(true, job);
+        if (job.status === "error") return finish(false, job);
+
+        // continue
+        activePoll = setTimeout(tick, 1000);
+      } catch (e) {
+        return finish(false, { error: e?.message || "Polling error" }, e);
+      }
+    };
+
+    const finish = (ok, job, err) => {
+      if (activePoll) clearTimeout(activePoll);
+      activePoll = null;
+      ok ? resolve(job) : reject(err || new Error(job?.error || "Job failed"));
+    };
+
+    tick();
+  });
+}
+
+function setDownloadingUI(isDownloading) {
+  const btn = qs("downloadBtn");
+  const icon = qs("downloadIcon");
+  const sp = qs("downloadSpinner");
+  const txt = qs("downloadText");
+
+  btn.disabled = !!isDownloading;
+  icon.style.display = isDownloading ? "none" : "inline-flex";
+  sp.style.display = isDownloading ? "inline-flex" : "none";
+  txt.textContent = isDownloading ? "Downloading…" : "Download audio";
+}
+
 function setStatus(text, kind = "") {
   const el = qs("status");
   el.className = `status ${kind}`.trim();
@@ -136,14 +198,32 @@ async function apiFetch(path, opts = {}) {
 }
 
 /* ---------- UI actions ---------- */
-async function loadFolders() {
-  setStatus("Loading folders...");
-  setLog("");
-  toast("Refreshing folders…", "info", 1200);
+const FOLDERS_CACHE_KEY = "foldersCache";
+const FOLDERS_CACHE_AT_KEY = "foldersCacheAt";
+const FOLDERS_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
 
-  const folders = await apiFetch("/api/music/folders", { method: "GET" });
+async function getFoldersCache() {
+  const obj = await chrome.storage.local.get([FOLDERS_CACHE_KEY, FOLDERS_CACHE_AT_KEY]);
+  const folders = obj[FOLDERS_CACHE_KEY];
+  const at = obj[FOLDERS_CACHE_AT_KEY];
 
+  if (!Array.isArray(folders) || typeof at !== "number") return null;
+  if (Date.now() - at > FOLDERS_CACHE_TTL_MS) return null;
+
+  return folders;
+}
+
+async function setFoldersCache(folders) {
+  await chrome.storage.local.set({
+    [FOLDERS_CACHE_KEY]: folders,
+    [FOLDERS_CACHE_AT_KEY]: Date.now()
+  });
+}
+
+function renderFoldersSelect(folders) {
   const sel = qs("folderSelect");
+  const prev = sel.value;
+
   sel.innerHTML = "";
   (folders || []).forEach((f) => {
     const opt = document.createElement("option");
@@ -152,31 +232,93 @@ async function loadFolders() {
     sel.appendChild(opt);
   });
 
+  // Keep previous selection if still exists
+  if (prev && folders.includes(prev)) sel.value = prev;
+}
+
+async function refreshFoldersFromApi({ showToast = true } = {}) {
+  setStatus("Loading folders...");
+  setLog("");
+  if (showToast) toast("Refreshing folders…", "info", 1200);
+
+  const folders = await apiFetch("/api/music/folders", { method: "GET" });
+
+  renderFoldersSelect(folders);
+  await setFoldersCache(folders);
+
   setStatus(`Folders found: ${folders.length}`, "ok");
-  toast(`Folders loaded (${folders.length})`, "ok");
+  if (showToast) toast(`Folders loaded (${folders.length})`, "ok");
+  return folders;
+}
+
+async function loadFolders() {
+  // 1) try cache first (no API call)
+  const cached = await getFoldersCache();
+  if (cached) {
+    renderFoldersSelect(cached);
+    setStatus(`Folders cached: ${cached.length}`, "ok");
+    return cached;
+  }
+
+  // 2) first time (or expired) -> call API
+  return refreshFoldersFromApi({ showToast: false });
 }
 
 async function doDownload() {
   const youtubeUrl = qs("youtubeUrl").value.trim();
   const newFolder = qs("newFolder").value.trim();
   const folderSelect = qs("folderSelect").value;
+
+  const isNewFolder = !!newFolder;
   const folder = newFolder || folderSelect;
 
   if (!youtubeUrl) throw new Error("Please provide a YouTube URL.");
   if (!folder) throw new Error("Select an existing folder or type a new one.");
 
-  setStatus("Downloading… please wait");
+  // UI lock
+  setDownloadingUI(true);
+  setStatus("Job created…");
   setLog("");
-  toast("Download started…", "info");
+  toast("Job started…", "info");
 
-  const out = await apiFetch("/api/youtube/download", {
+  // Create job
+  const start = await apiFetch("/api/youtube/download", {
     method: "POST",
     body: JSON.stringify({ youtubeUrl, folder })
   });
 
-  setStatus("Done ✅", "ok");
-  setLog(out?.logTail || "OK");
-  toast("Download completed ✅", "ok");
+  const jobId = start?.jobId;
+  if (!jobId) throw new Error("Missing jobId from server");
+
+  toast(`Job ID: ${jobId}`, "info", 1500);
+
+  // Poll job + live logs
+  try {
+    const finalJob = await pollJobUntilDone(jobId, {
+      onProgress: (job) => {
+        if (!job) return;
+        if (job.status === "running") setStatus("Downloading…");
+      }
+    });
+
+    setStatus("Done ✅", "ok");
+    toast("Download completed ✅", "ok");
+
+    // Refresh folders ONLY if user created a new one
+    if (isNewFolder) {
+      qs("newFolder").value = "";
+      await refreshFoldersFromApi({ showToast: true });
+      qs("folderSelect").value = folder;
+    }
+
+    return finalJob;
+  } catch (e) {
+    setStatus(e?.message || "Download failed", "err");
+    toast(e?.message || "Download failed", "err", 3200);
+    throw e;
+  } finally {
+    setDownloadingUI(false);
+  }
 }
 
 /* ---------- Init ---------- */
@@ -187,7 +329,7 @@ async function doDownload() {
 
   qs("themeToggle").addEventListener("click", () => toggleTheme().catch(() => {}));
   qs("openOptions").addEventListener("click", () => chrome.runtime.openOptionsPage());
-  qs("refreshFolders").addEventListener("click", () => loadFolders().catch(e => {
+  qs("refreshFolders").addEventListener("click", () => refreshFoldersFromApi({ showToast: true }).catch(e => {
     setStatus(e.message, "err");
     toast(e.message, "err", 3000);
   }));
@@ -208,3 +350,8 @@ async function doDownload() {
     toast(e.message, "err", 3200);
   }
 })();
+
+/*
+ * MIT License
+ * Copyright (c) 2026 Antonio Viola
+ */

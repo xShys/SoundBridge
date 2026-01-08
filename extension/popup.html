@@ -6,7 +6,7 @@
   <title>Jellyfin YT</title>
 
   <style>
-    :root{
+    :root {
       /* Material-ish (Android / Material You) tokens */
       --radius-lg: 16px;
       --radius-md: 12px;
@@ -32,7 +32,7 @@
     }
 
     /* Light theme */
-    [data-theme="light"]{
+    [data-theme="light"] {
       --bg: #f7f9fc;
       --surface: #ffffff;
       --surface-2: #f1f5fb;
@@ -51,16 +51,16 @@
 
     *{ box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
-    body{
-      width: 372px;
+    body {
+      width: 425px;
       font-family: var(--font);
       background: var(--bg);
       color: var(--text);
-      padding: 12px;
+      padding: 5px;
     }
 
     /* App card container */
-    .app{
+    .app {
       background: linear-gradient(180deg, var(--surface), var(--surface));
       border: 1px solid var(--outline);
       border-radius: var(--radius-lg);
@@ -68,7 +68,7 @@
       overflow: hidden;
     }
 
-    .topbar{
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -77,13 +77,13 @@
       background: linear-gradient(180deg, var(--surface), var(--surface-2));
     }
 
-    .brand{
+    .brand {
       display: flex;
       gap: 10px;
       align-items: center;
       min-width: 0;
     }
-    .brand-badge{
+    .brand-badge {
       width: 34px;
       height: 34px;
       border-radius: 12px;
@@ -95,13 +95,14 @@
       place-items: center;
       flex: 0 0 auto;
     }
-    .brand-badge svg{ opacity: .92; }
-    .brand-title{
+    .brand-badge svg { opacity: .92; }
+    .brand-title {
       display: flex;
       flex-direction: column;
       min-width: 0;
     }
-    .brand-title .name{
+    .brand-title .name {
+      color: var(--text);
       font-size: 13px;
       font-weight: 700;
       letter-spacing: .2px;
@@ -110,7 +111,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .brand-title .sub{
+    .brand-title .sub {
       font-size: 11px;
       color: var(--muted);
       line-height: 1.15;
@@ -119,35 +120,36 @@
       text-overflow: ellipsis;
     }
 
-    .actions{
+    .actions {
       display: flex;
       gap: 6px;
       align-items: center;
     }
 
-    .icon-btn{
+    .icon-btn {
       width: 34px;
       height: 34px;
       border-radius: 12px;
       background: var(--surface);
+      color: var(--text);
       border: 1px solid var(--outline);
       display: grid;
       place-items: center;
       cursor: pointer;
       transition: transform .08s ease, background .15s ease, border-color .15s ease;
     }
-    .icon-btn:hover{ background: var(--surface-2); }
-    .icon-btn:active{ transform: scale(.98); }
-    .icon-btn:focus{ outline: none; box-shadow: var(--ring); }
-    .icon-btn svg{ opacity: .9; }
+    .icon-btn:hover { background: var(--surface-2); }
+    .icon-btn:active { transform: scale(.98); }
+    .icon-btn:focus { outline: none; box-shadow: var(--ring); }
+    .icon-btn svg { opacity: .9; }
 
-    .content{
+    .content {
       padding: 12px;
       display: grid;
       gap: 10px;
     }
 
-    label{
+    label {
       display:block;
       font-size: 11px;
       color: var(--muted);
@@ -155,7 +157,7 @@
       letter-spacing: .2px;
     }
 
-    .field{
+    .field {
       background: var(--surface);
       border: 1px solid var(--outline);
       border-radius: var(--radius-md);
@@ -165,16 +167,16 @@
       outline: none;
       transition: box-shadow .15s ease, border-color .15s ease, background .15s ease;
     }
-    .field::placeholder{ color: rgba(231,238,248,.45); }
-    [data-theme="light"] .field::placeholder{ color: rgba(11,18,32,.35); }
+    .field::placeholder { color: rgba(231,238,248,.45); }
+    [data-theme="light"] .field::placeholder { color: rgba(11,18,32,.35); }
 
-    .field:focus{
+    .field:focus {
       box-shadow: var(--ring);
       border-color: rgba(125,211,252,.55);
       background: var(--surface-2);
     }
 
-    select.field{
+    select.field {
       appearance: none;
       background-image:
         linear-gradient(45deg, transparent 50%, var(--muted) 50%),
@@ -188,7 +190,7 @@
       cursor: pointer;
     }
 
-    .btn{
+    .btn {
       width: 100%;
       border-radius: var(--radius-md);
       padding: 11px 12px;
@@ -202,37 +204,37 @@
       justify-content: center;
       gap: 8px;
     }
-    .btn:active{ transform: scale(.99); }
-    .btn:focus{ outline: none; box-shadow: var(--ring); }
+    .btn:active { transform: scale(.99); }
+    .btn:focus { outline: none; box-shadow: var(--ring); }
 
-    .btn-primary{
+    .btn-primary {
       background: linear-gradient(135deg, rgba(125,211,252,.95), rgba(167,243,208,.85));
       color: #061018;
       border-color: rgba(255,255,255,.08);
     }
-    [data-theme="light"] .btn-primary{
+    [data-theme="light"] .btn-primary {
       color: #071422;
     }
-    .btn-primary:hover{ filter: brightness(1.03); }
+    .btn-primary:hover { filter: brightness(1.03); }
 
-    .btn-secondary{
+    .btn-secondary {
       background: var(--surface);
       color: var(--text);
       border-color: var(--outline);
     }
-    .btn-secondary:hover{ background: var(--surface-2); }
+    .btn-secondary:hover { background: var(--surface-2); }
 
-    .status{
+    .status {
       font-size: 12px;
       color: var(--muted);
       margin: 2px 2px 0 2px;
       min-height: 16px;
       white-space: pre-wrap;
     }
-    .status.ok{ color: var(--primary-2); }
-    .status.err{ color: var(--danger); }
+    .status.ok { color: var(--primary-2); }
+    .status.err { color: var(--danger); }
 
-    textarea.log{
+    textarea.log {
       height: 120px;
       resize: none;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -246,14 +248,14 @@
       outline: none;
     }
 
-    .divider{
+    .divider {
       height: 1px;
       background: var(--outline);
       margin: 2px 0;
       opacity: .9;
     }
 
-    .footer{
+    .footer {
       padding: 12px;
       border-top: 1px solid var(--outline);
       background: linear-gradient(180deg, var(--surface), var(--surface-2));
@@ -261,35 +263,35 @@
       gap: 10px;
     }
 
-    .donate-row{
+    .donate-row {
       display: flex;
       gap: 8px;
     }
-    .donate-row a{ flex: 1; text-decoration: none; }
-    .btn-donate{
+    .donate-row a { flex: 1; text-decoration: none; }
+    .btn-donate {
       width: 100%;
       justify-content: center;
     }
-    .btn-donate svg{
+    .btn-donate svg {
       width: 16px;
       height: 16px;
       opacity: .95;
     }
 
-    .signature{
+    .signature {
       text-align: center;
       font-size: 11px;
       color: var(--muted);
       margin: 0;
       letter-spacing: .15px;
     }
-    .heart{
+    .heart {
       color: var(--danger);
       font-weight: 900;
     }
 
     /* Toasts */
-    .toasts{
+    .toasts {
       position: fixed;
       inset: auto 12px 12px 12px;
       display: grid;
@@ -297,7 +299,7 @@
       z-index: 9999;
       pointer-events: none;
     }
-    .toast{
+    .toast {
       pointer-events: auto;
       display:flex;
       align-items:flex-start;
@@ -310,9 +312,9 @@
       animation: pop .18s ease-out;
     }
     @keyframes pop { from { transform: translateY(8px); opacity: .0; } to { transform: translateY(0); opacity: 1; } }
-    .toast .ico{ margin-top: 1px; opacity: .9; flex: 0 0 auto; }
-    .toast .txt{ font-size: 12px; line-height: 1.35; color: var(--text); }
-    .toast .close{
+    .toast .ico { margin-top: 1px; opacity: .9; flex: 0 0 auto; }
+    .toast .txt { font-size: 12px; line-height: 1.35; color: var(--text); }
+    .toast .close {
       margin-left: auto;
       width: 28px; height: 28px;
       border-radius: 10px;
@@ -322,11 +324,19 @@
       display:grid;
       place-items:center;
     }
-    .toast .close:focus{ outline:none; box-shadow: var(--ring); }
+    .toast .close:focus { outline:none; box-shadow: var(--ring); }
 
-    .toast.ok{ border-color: rgba(167,243,208,.30); }
-    .toast.err{ border-color: rgba(251,113,133,.30); }
-    .toast.info{ border-color: rgba(125,211,252,.30); }
+    .toast.ok { border-color: rgba(167,243,208,.30); }
+    .toast.err { border-color: rgba(251,113,133,.30); }
+    .toast.info { border-color: rgba(125,211,252,.30); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #downloadSpinner svg { animation: spin 0.9s linear infinite; }
+    .btn[disabled] {
+      opacity: .7;
+      cursor: not-allowed;
+      filter: grayscale(.1);
+    }
   </style>
 </head>
 
@@ -343,7 +353,7 @@
           </svg>
         </div>
         <div class="brand-title">
-          <div class="name">Jellyfin YT Downloader</div>
+          <div class="name">Audio YT Downloader</div>
           <div class="sub">Save audio directly into your library</div>
         </div>
       </div>
@@ -390,12 +400,19 @@
       </div>
 
       <button id="downloadBtn" class="btn btn-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M12 3v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M8 11l4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        Download audio
+        <span id="downloadIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 3v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 11l4 4l4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 21h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span id="downloadSpinner" style="display:none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2a10 10 0 1 0 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span id="downloadText">Download audio</span>
       </button>
 
       <div id="status" class="status"></div>
