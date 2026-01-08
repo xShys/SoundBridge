@@ -365,3 +365,17 @@ docker compose logs -f yt-audio-api
 
 This project is licensed under the **MIT License**.
 You are free to use, modify, and distribute this software in accordance with the terms of the MIT License.
+
+## Support the project ❤️
+
+SoundBridge is my **first open-source project**, developed and maintained in my free time.
+
+If you find this tool useful and would like to support its development, consider making a small donation.  
+Your support helps cover development time, infrastructure costs, and motivates me to continue building and maintaining open-source tools like this one.
+
+Donations are **completely optional**, but always greatly appreciated.
+
+- 💙 PayPal: [https://www.paypal.me/xShys91]
+- ☕ Buy Me a Coffee: [https://buymeacoffee.com/antoniovioladev]
+
+Thank you for your support!
