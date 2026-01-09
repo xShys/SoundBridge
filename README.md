@@ -40,7 +40,7 @@ I personally use Finamp(iOS) for listen my Jellyfin music library
 ## Installation (Server)
 
 1) Clone the repository
-git clone https://github.com/xShys/YT-Audio-Downloader.git
+git clone [https://github.com/xShys/SoundBridge.git](https://github.com/xShys/SoundBridge)
 cd YT-Audio-Downloader
 
 2) Configure environment variables
