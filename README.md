@@ -40,10 +40,12 @@ I personally use Finamp(iOS) for listen my Jellyfin music library
 ## Installation (Server)
 
 1) Clone the repository
-git clone [https://github.com/xShys/SoundBridge.git](https://github.com/xShys/SoundBridge)
-cd YT-Audio-Downloader
+```
+git clone https://github.com/xShys/SoundBridge.git
+cd SoundBridge
+```
 
-2) Configure environment variables
+3) Configure environment variables
 Create/modify backend/.env:
 
 ```
@@ -375,7 +377,7 @@ Your support helps cover development time, infrastructure costs, and motivates m
 
 Donations are **completely optional**, but always greatly appreciated.
 
-- 💙 PayPal: [https://www.paypal.me/xShys91]
-- ☕ Buy Me a Coffee: [https://buymeacoffee.com/antoniovioladev]
+- 💙 [PayPal](https://www.paypal.me/xShys91)
+- ☕ [Buy Me a Coffee](https://buymeacoffee.com/antoniovioladev)
 
 Thank you for your support!
