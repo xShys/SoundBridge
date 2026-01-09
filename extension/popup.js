@@ -351,6 +351,10 @@ async function doDownload() {
   }
 })();
 
+window.addEventListener("unload", () => {
+  if (activePoll) clearTimeout(activePoll);
+});
+
 /*
  * MIT License
  * Copyright (c) 2026 Antonio Viola

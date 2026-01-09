@@ -1,11 +1,24 @@
 {
   "manifest_version": 3,
   "name": "SoundBridge",
-  "version": "1.0.2",
+  "short_name": "SoundBridge",
   "description": "Send audio from supported videos directly to your personal server music library.",
+  "version": "1.0.2",
+  "icons": {
+    "16": "icon16.png",
+    "32": "icon32.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "permissions": ["storage", "activeTab", "tabs"],
   "host_permissions": ["https://*/", "http://*/"],
   "action": {
+    "default_icon": {
+      "16": "icon16.png",
+      "32": "icon32.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    },
     "default_title": "Download to personal library",
     "default_popup": "popup.html"
   },
