@@ -96,18 +96,21 @@ Test the folders endpoint:
 curl -s -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" http://<LAN_SERVER_IP>:8787/api/music/folders
 ```
 
-## Browser Extension Installation (cooming soon official extension on Chrome Store)
+## Browser Extension Installation
 Chrome / Edge:
 
-- Go to chrome://extensions
+Install from [Chrom Web Store](https://chromewebstore.google.com/detail/acdhgbaglaikedbbejccmmhegglmdpnl?utm_source=item-share-cb)
+
+OR:
+- Go to: chrome://extensions
 - Enable Developer mode
 - Click Load unpacked
-- Select the extension/ folder
+- Select the extension folder "/extension"
 
 Firefox (MV3):
 Firefox supports MV3 with some differences; for testing:
 
-- Go to about: debugging#/runtime/this-firefox
+- Go to: about:debugging#/runtime/this-firefox
 - Click Load Temporary Add-on
 - Select extension/manifest.json
 
