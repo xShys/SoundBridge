@@ -100,7 +100,7 @@ Chrome/Edge:
 Install from [Chrom Web Store](https://chromewebstore.google.com/detail/acdhgbaglaikedbbejccmmhegglmdpnl?utm_source=item-share-cb)
 
 Firefox:
-Install from [Firefox Add-Ons](https://addons.mozilla.org/it/firefox/addon/soundbridge/)
+Install from [Firefox Add-Ons](https://addons.mozilla.org/it/firefox/addon/soundbridge/) (Coming Soon - in review)
 
 OR manual install to try extension
 Chrome/Edge:
