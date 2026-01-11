@@ -39,11 +39,9 @@ I personally use Finamp(iOS) for listen my Jellyfin music library
 
 ## Installation (Server)
 
-1) Clone the repository
-```
-git clone https://github.com/xShys/SoundBridge.git
-cd SoundBridge
-```
+1) Copy backend folder on your server
+
+2) Set your [docker-compose.yml](https://github.com/xShys/SoundBridge/blob/main/docker/docker-compose.yml)
 
 3) Configure environment variables
 Create/modify backend/.env:
@@ -62,7 +60,7 @@ Tip: generate a long random key for api key:
 openssl rand -hex 32
 ```
 
-3) Verify music mount
+4) Verify music mount
 Make sure the folder exists and is writable:
 
 ```
@@ -70,14 +68,14 @@ sudo mkdir -p /mylibrary/media/music
 sudo chown -R $USER:$USER /mylibrary/media/music
 ```
 
-4) Run with Docker Compose
+5) Run with Docker Compose
 
 ```
 docker compose up -d
 docker compose logs -f api
 ```
 
-5) Test the API (LAN)
+6) Test the API (LAN)
 From the server:
 
 ```
@@ -97,11 +95,15 @@ curl -s -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" http://<LAN_SERVER_IP>:
 ```
 
 ## Browser Extension Installation
-Chrome / Edge:
+Chrome/Edge:
 
 Install from [Chrom Web Store](https://chromewebstore.google.com/detail/acdhgbaglaikedbbejccmmhegglmdpnl?utm_source=item-share-cb)
 
-OR:
+Firefox:
+Install from [Firefox Add-Ons](https://addons.mozilla.org/it/firefox/addon/soundbridge/)
+
+OR manual install to try extension
+Chrome/Edge:
 - Go to: chrome://extensions
 - Enable Developer mode
 - Click Load unpacked
@@ -114,8 +116,7 @@ Firefox supports MV3 with some differences; for testing:
 - Click Load Temporary Add-on
 - Select extension/manifest.json
 
-Extension Configuration:
-
+##Extension Configuration:
 Open the extension options and set:
 
 - API Base URL: http://<LAN_SERVER_IP>:8787
