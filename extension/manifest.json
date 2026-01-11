@@ -3,7 +3,7 @@
   "name": "SoundBridge",
   "short_name": "SoundBridge",
   "description": "Send audio from supported videos directly to your personal server music library.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
@@ -22,5 +22,14 @@
     "default_title": "Download to personal library",
     "default_popup": "popup.html"
   },
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "soundbridge@antonioviola.dev",
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
 }
