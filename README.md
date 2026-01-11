@@ -40,10 +40,12 @@ I personally use Finamp(iOS) for listen my Jellyfin music library
 ## Installation (Server)
 
 1) Clone the repository
-git clone https://github.com/xShys/YT-Audio-Downloader.git
-cd YT-Audio-Downloader
+```
+git clone https://github.com/xShys/SoundBridge.git
+cd SoundBridge
+```
 
-2) Configure environment variables
+3) Configure environment variables
 Create/modify backend/.env:
 
 ```
@@ -94,18 +96,21 @@ Test the folders endpoint:
 curl -s -H "Authorization: Bearer CHANGE_ME_LONG_RANDOM" http://<LAN_SERVER_IP>:8787/api/music/folders
 ```
 
-## Browser Extension Installation (cooming soon official extension on Chrome Store)
+## Browser Extension Installation
 Chrome / Edge:
 
-- Go to chrome://extensions
+Install from [Chrom Web Store](https://chromewebstore.google.com/detail/acdhgbaglaikedbbejccmmhegglmdpnl?utm_source=item-share-cb)
+
+OR:
+- Go to: chrome://extensions
 - Enable Developer mode
 - Click Load unpacked
-- Select the extension/ folder
+- Select the extension folder "/extension"
 
 Firefox (MV3):
 Firefox supports MV3 with some differences; for testing:
 
-- Go to about: debugging#/runtime/this-firefox
+- Go to: about:debugging#/runtime/this-firefox
 - Click Load Temporary Add-on
 - Select extension/manifest.json
 
@@ -375,7 +380,7 @@ Your support helps cover development time, infrastructure costs, and motivates m
 
 Donations are **completely optional**, but always greatly appreciated.
 
-- 💙 PayPal: [https://www.paypal.me/xShys91]
-- ☕ Buy Me a Coffee: [https://buymeacoffee.com/antoniovioladev]
+- 💙 [PayPal](https://www.paypal.me/xShys91)
+- ☕ [Buy Me a Coffee](https://buymeacoffee.com/antoniovioladev)
 
 Thank you for your support!
