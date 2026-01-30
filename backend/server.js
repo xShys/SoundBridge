@@ -129,6 +129,9 @@ function spawnDockerExecYtDlp({ youtubeUrl, folder, job }) {
     "-i",
     YTDLP_CONTAINER,
     "yt-dlp",
+    "--extractor-args", "youtube:player_client=android",
+    "--retries", "10",
+    "--fragment-retries", "10",
     "-x",
     "--audio-format", "mp3",
     "--audio-quality", "0",
@@ -136,7 +139,7 @@ function spawnDockerExecYtDlp({ youtubeUrl, folder, job }) {
     "--embed-thumbnail",
     "--no-playlist",
     "--restrict-filenames",
-    "--newline", // force line breaks
+    "--newline",
     "-o", outputTpl,
     youtubeUrl
   ];
@@ -145,7 +148,6 @@ function spawnDockerExecYtDlp({ youtubeUrl, folder, job }) {
 
   const onData = (buf, src) => {
     const text = buf.toString();
-    // split keeping lines
     text.split(/\r?\n/).filter(Boolean).forEach(line => appendLog(job, `[${src}] ${line}`));
   };
 
